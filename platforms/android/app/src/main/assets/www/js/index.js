@@ -62,10 +62,11 @@ var app = {
     onDeviceReady: function() {
         //this.receivedEvent('deviceready');
         var rta = document.getElementById("lbl-rta");
+        var string = "";
         FingerprintAuth.isAvailable(
             function (result) {
 
-                alert("FingerprintAuth available: " + JSON.stringify(result));
+                string = "FingerprintAuth available: " + JSON.stringify(result);
     
                 // If has fingerprint device and has fingerprints registered
                 if (result.isAvailable == true && result.hasEnrolledFingerprints == true) {
@@ -84,25 +85,25 @@ var app = {
 
                     // Set config and success callback
                     FingerprintAuth.encrypt(encryptConfig, function(_fingerResult){
-                        alert("successCallback(): " + JSON.stringify(_fingerResult))
-                        if (_fingerResult.withFingerprint) {
-                            alert("Successfully encrypted credentials.");
-                            alert("Encrypted credentials: " + result.token);  
+                        string = string + "\n successCallback() " + JSON.stringify(_fingerResult);
+                        if (_fingerResult.withFingerprint) { 
+                            string = string + "\n Successfully encrypted credentials ";
+                            string = string + "\n Encrypted credentials: " + result.token;
                         } else if (_fingerResult.withBackup) {
-                            alert("Authenticated with backup password");
+                            string = string + "\n Authenticated with backup password! " + err;
                         }
                     // Error callback
                     }, function(err){
                         if (err === "Cancelled") {
-                            alert("FingerprintAuth Dialog Cancelled!");
+                            string = string + "\n FingerprintAuth Dialog Cancelled! " + err;
                         } else {
-                            alert("FingerprintAuth Error: " + err);
+                            string = string + "\n FingerprintAuthError! " + err;
                         }
                     });
                 }
 
                 if(rta) {
-                    rta.innerHTML = "Disponible";
+                    rta.innerHTML = string + "\n Disponible";
                 }
             }, 
             function (message) {
