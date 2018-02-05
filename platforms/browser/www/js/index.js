@@ -67,6 +67,16 @@ var app = {
             function (result) {
 
                 string = "FingerprintAuth available: " + JSON.stringify(result);
+
+                if (result.isAvailable)
+                    alert("Available");
+                else 
+                    alert("No available");
+                
+                if (result.hasEnrolledFingerprints)
+                    alert("hasEnrolledFingerprints");
+                else 
+                    alert("No hasEnrolledFingerprints");
     
                 // If has fingerprint device and has fingerprints registered
                 if (result.isAvailable == true && result.hasEnrolledFingerprints == true) {
