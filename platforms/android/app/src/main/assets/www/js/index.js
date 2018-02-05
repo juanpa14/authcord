@@ -22,12 +22,58 @@ var app = {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
     },
 
+    setSocialLogin: function(){
+        var log = document.getElementById("log-fcbk");
+        if (log) {
+            log.addEventListener('click', this.socialLogin.bind(log.id), false);
+        }
+
+        log = document.getElementById("log-gpls");
+        if (log) {
+            log.addEventListener('click', this.socialLogin.bind(log.id), false);
+        }
+
+        log = document.getElementById("log-twtr");
+        if (log) {
+            log.addEventListener('click', this.socialLogin.bind(log.id), false);
+        }
+    },
+
+    socialLogin: function(target){
+        switch (target.currentTarget.id) {
+            case "log-fcbk":
+                alert('try to log with facebook');
+                break;
+            case "log-gpls":
+                alert('try to log with g plus');
+                break;
+            case "log-twtr":
+                alert('try to log with twitter');
+                break;
+            default:
+                break;
+        }
+    },
+
     // deviceready Event Handler
     //
     // Bind any cordova events here. Common events are:
     // 'pause', 'resume', etc.
     onDeviceReady: function() {
-        this.receivedEvent('deviceready');
+        //this.receivedEvent('deviceready');
+        var rta = document.getElementById("lbl-rta");
+        FingerprintAuth.isAvailable(
+            function (result) {
+                if(rta) {
+                    rta.innerHTML = "Disponible";
+                }
+            }, 
+            function (message) {
+                if(rta) {
+                    rta.innerHTML = "No disponible " + message;
+                }
+            }
+        );
     },
 
     // Update DOM on a Received Event
@@ -44,3 +90,4 @@ var app = {
 };
 
 app.initialize();
+app.setSocialLogin();
