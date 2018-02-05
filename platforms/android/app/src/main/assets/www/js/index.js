@@ -64,6 +64,43 @@ var app = {
         var rta = document.getElementById("lbl-rta");
         FingerprintAuth.isAvailable(
             function (result) {
+
+                alert("FingerprintAuth available: " + JSON.stringify(result));
+    
+                // If has fingerprint device and has fingerprints registered
+                if (result.isAvailable == true && result.hasEnrolledFingerprints == true) {
+
+                    // Check the docs to know more about the encryptConfig object :)
+                    var encryptConfig = {
+                        clientId: "myAppName",
+                        username: "currentUser",
+                        password: "currentUserPassword",
+                        maxAttempts: 5,
+                        locale: "en_US",
+                        dialogTitle: "Hey dude, your finger",
+                        dialogMessage: "Put your finger on the device",
+                        dialogHint: "No one will steal your identity, promised"
+                    }; // See config object for required parameters
+
+                    // Set config and success callback
+                    FingerprintAuth.encrypt(encryptConfig, function(_fingerResult){
+                        alert("successCallback(): " + JSON.stringify(_fingerResult))
+                        if (_fingerResult.withFingerprint) {
+                            alert("Successfully encrypted credentials.");
+                            alert("Encrypted credentials: " + result.token);  
+                        } else if (_fingerResult.withBackup) {
+                            alert("Authenticated with backup password");
+                        }
+                    // Error callback
+                    }, function(err){
+                        if (err === "Cancelled") {
+                            alert("FingerprintAuth Dialog Cancelled!");
+                        } else {
+                            alert("FingerprintAuth Error: " + err);
+                        }
+                    });
+                }
+
                 if(rta) {
                     rta.innerHTML = "Disponible";
                 }
